@@ -22,11 +22,18 @@ describe('Typemap', function() {
 		result = jsonSql.dialect.typemap.get('gettype')({type: jsonSql.TYPES.INT});
 		expect(result).to.be.equal('integer');
 
+
         jsonSql = jsonSqlLib({dialect: 'postgresql'});
 		result = jsonSql.dialect.typemap.get('gettype')({type: jsonSql.TYPES.INT, autoincrement: true});
 		expect(result).to.be.equal('serial');
 
 	});
+
+    it('"nvarchar(120)" should be ok', function(){
+        var jsonSql = jsonSqlLib({dialect: 'mssql'});
+		var result = jsonSql.dialect.typemap.get('gettype')({type: {id: jsonSql.TYPES.NVARCHAR, size: 120 }});
+		expect(result).to.be.equal('nvarchar(120)');
+    });
 
     it('"postgresql" "int/serial" should be ok with autoincrement', function() {
         var jsonSql = jsonSqlLib({dialect: 'postgresql'});
