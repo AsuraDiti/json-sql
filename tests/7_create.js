@@ -72,6 +72,18 @@ describe('Create', function() {
 		expect(result.values).to.be.eql({});
 	});
 
+    it('should be ok with a foreignkey as constrain', function() {
+		var result = jsonSql.build({
+			type: 'create',
+			table: 'users',
+            columnlist: [ { name: 'id', type: jsonSql.TYPES.INT}, { name:'username', type: jsonSql.TYPES.TEXT}],
+            constrainlist: [{ foreignkey: { tablekey: ["id"], other:{"adresses": ["id"]}} }]
+		});
+
+		expect(result.query).to.be.equal('create table "users" ( "id" int, "username" text foreign key ( "id" ) references "adresses"("id") );');
+		expect(result.values).to.be.eql({});
+	});
+
     it('should be ok with a default value', function() {
 		var result = jsonSql.build({
 			type: 'create',
