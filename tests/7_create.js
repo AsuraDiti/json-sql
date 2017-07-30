@@ -4,7 +4,17 @@ var jsonSql = require('../lib')({dialect: 'mssql'});
 var expect = require('chai').expect;
 
 describe('Create', function() {
+    it('should be ok with a database', function() {
+		var result = jsonSql.build({
+			type: 'create',
+			database: 'test'
+		});
 
+
+
+		expect(result.query).to.be.equal('create database "test";');
+		expect(result.values).to.be.eql({});
+	});
     it('should be ok with at least one column', function() {
 		var result = jsonSql.build({
 			type: 'create',

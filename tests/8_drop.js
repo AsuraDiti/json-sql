@@ -15,4 +15,13 @@ describe('Drop', function() {
 		expect(result.values).to.be.eql({});
 	});
 
+    it('should be ok with database property', function() {
+		var result = jsonSql.build({
+			type: 'drop',
+			database: 'test'
+		});
+
+		expect(result.query).to.be.equal('drop database "test";');
+		expect(result.values).to.be.eql({});
+	});
 });
