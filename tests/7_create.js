@@ -73,4 +73,16 @@ describe('Create', function() {
 		expect(result.values).to.be.eql({});
 	});
 
+    it('should be ok with a multiple columned primary key value', function() {
+		var result = jsonSql.build({
+			type: 'create',
+			table: 'users',
+            columnlist: [ { name: 'id', type: jsonSql.TYPES.INT, default: 0 }, { name: 'username', type: jsonSql.TYPES.TEXT, default: "user" }],
+            constrainlist: [{ primary: ['id', 'username']}]
+		});
+
+		expect(result.query).to.be.equal('create table "users" ( "id" int default 0, "username" text default \'user\' primary key ( "id", "username" ) );');
+		expect(result.values).to.be.eql({});
+	});
+
 });
