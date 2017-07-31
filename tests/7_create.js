@@ -72,15 +72,26 @@ describe('Create', function() {
 		expect(result.values).to.be.eql({});
 	});
 
-    it('should be ok with a foreignkey as constrain', function() {
+    it('should be ok with a foreignkey as constraint', function() {
 		var result = jsonSql.build({
 			type: 'create',
 			table: 'users',
             columnlist: [ { name: 'id', type: jsonSql.TYPES.INT}, { name:'username', type: jsonSql.TYPES.TEXT}],
-            constrainlist: [{ foreignkey: { tablekey: ["id"], other:{"adresses": ["id"]}} }]
+            constraintlist: [{ foreignkey: { tablekey: ["id"], other:{"adresses": ["id"]}} }]
 		});
 
 		expect(result.query).to.be.equal('create table "users" ( "id" int, "username" text foreign key ( "id" ) references "adresses"("id") );');
+		expect(result.values).to.be.eql({});
+	});
+    it('should be ok with a foreignkey as constraint with name', function() {
+		var result = jsonSql.build({
+			type: 'create',
+			table: 'users',
+            columnlist: [ { name: 'id', type: jsonSql.TYPES.INT}, { name:'username', type: jsonSql.TYPES.TEXT}],
+            constraintlist: [{ constraintname: 'FK_1', foreignkey: { tablekey: ["id"], other:{"adresses": ["id"]}} }]
+		});
+
+		expect(result.query).to.be.equal('create table "users" ( "id" int, "username" text constraint "FK_1" foreign key ( "id" ) references "adresses"("id") );');
 		expect(result.values).to.be.eql({});
 	});
 
@@ -100,7 +111,7 @@ describe('Create', function() {
 			type: 'create',
 			table: 'users',
             columnlist: [ { name: 'id', type: jsonSql.TYPES.INT, default: 0 }, { name: 'username', type: jsonSql.TYPES.TEXT, default: "user" }],
-            constrainlist: [{ primary: ['id', 'username']}]
+            constraintlist: [{ primary: ['id', 'username']}]
 		});
 
 		expect(result.query).to.be.equal('create table "users" ( "id" int default 0, "username" text default \'user\' primary key ( "id", "username" ) );');
