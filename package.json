@@ -8,6 +8,9 @@
     "type": "git",
     "url": "git@github.com:2do2go/json-sql.git"
   },
+  "scripts": {
+    "test": "gulp test"
+  },
   "keywords": [
     "json-sql",
     "json",
